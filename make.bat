@@ -1,0 +1,1 @@
+clang++ main.cpp src/bill.cpp src/debt.cpp src/account.cpp src/user.cpp src/users.cpp src/intro_menu.cpp src/account_menu.cpp src/bank_app.cpp -o budget_app.exe -Iinclude -std=c++20
