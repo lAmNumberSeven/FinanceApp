@@ -170,6 +170,6 @@ void User::payoff_debt(int index, int bank_account)
 
     Account account = this->get_account(bank_account);
     account.withdraw(debt_amount);
-    printf("Paid off debt due on: %s\n", debt.get_name());
+    // printf("Paid off debt due on: %s \n", debt.get_name());
     debt.get_debt_details();
 }

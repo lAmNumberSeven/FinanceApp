@@ -222,6 +222,8 @@ void AccountMenu::pay_debt()
     printf("Pay Debt:\n");
 }
 
+void AccountMenu::payoff_bill() {}
+void AccountMenu::payoff_debt() {}
 void AccountMenu::add_bill()
 {
     system("cls");
