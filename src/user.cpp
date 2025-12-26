@@ -1,6 +1,33 @@
 #include "user.h"
 User::User(const std::string &username, const std::string &password)
-    : username(username), password(password), is_logged_in(false), income(0.0) {}
+    : username(username), password(password), is_logged_in(false), income(0.0)
+{
+    // Load info from txt and set to user when log-in
+    std::ifstream file("accounts.txt");
+    if (file.is_open())
+    {
+
+        std::string line;
+        while (std::getline(file, line))
+        {
+            size_t delimiter_pos = line.find(',');
+            if (delimiter_pos != std::string::npos)
+            {
+                std::string username = line.substr(0, delimiter_pos);
+                if (username == get_username()) // check that account is users
+                {
+                    printf("lgtm\n");
+                    size_t second_delimiter_pos = line.find(',', delimiter_pos + 1);
+                    std::string account_name = line.substr(delimiter_pos + 1, second_delimiter_pos - delimiter_pos - 1);
+                    double balance = std::stod(line.substr(second_delimiter_pos + 1));
+                    Account account = {balance, account_name};
+                    bank_accounts.push_back(account);
+                }
+            }
+        }
+        file.close();
+    }
+}
 // User::~User() {}
 std::string User::get_username() const
 {
@@ -33,7 +60,7 @@ double User::get_income() const
 }
 void User::create_bank_account(double initial_balance, std::string account_name)
 {
-    Account new_account(initial_balance);
+    Account new_account(initial_balance, account_name);
     bank_accounts.push_back(new_account);
     printf("Bank account '%s' created for user %s with initial balance %.2f\n",
            account_name.c_str(), username.c_str(), initial_balance);
@@ -60,6 +87,7 @@ std::string User::get_password() const
 }
 const std::vector<Account> &User::get_bank_accounts() const
 {
+
     return bank_accounts;
 }
 

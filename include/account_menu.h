@@ -14,7 +14,7 @@ public:
     void deposit_funds();
     void withdraw_funds();
     void set_income();
-    void create_bank_account();
+    void create_bank_account(); /** @todo creates account but cant access it right away */
     void view_financial_summary();
     void pay_bill();
     void pay_debt();

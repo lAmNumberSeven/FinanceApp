@@ -2,6 +2,7 @@
 void AccountMenu::display_menu(User user)
 {
     this->user = user;
+    std::cout << "Welcome " << user.get_username() << std::endl;
     printf("Account Menu:\n");
     printf("1. View Account Details\n");
     printf("2. Deposit Funds\n");
@@ -97,7 +98,8 @@ void AccountMenu::view_account_details()
     }
     else
     {
-        view_financial_summary();
+        printf("Exiting, Goodbye..");
+        exit(0);
     }
 }
 
@@ -181,7 +183,18 @@ void AccountMenu::create_bank_account()
     user.create_bank_account(balance, account_name);
 
     printf("Account Create!\n");
-    user.get_bank_accounts();
+    printf("Press 1 to View to New Account");
+    int input;
+    std::cin >> input;
+    if (input == 1)
+    {
+        user.get_bank_accounts();
+    }
+    else
+    {
+        printf("Invalid input, exiting...");
+        exit(0);
+    }
 }
 
 void AccountMenu::view_financial_summary()

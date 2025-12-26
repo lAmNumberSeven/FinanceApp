@@ -1,6 +1,6 @@
 #include "account.h"
 #include <cstdio>
-Account::Account(double initial_balance) : balance(initial_balance) {}
+Account::Account(double initial_balance, std::string account_name) : balance(initial_balance), account_name(account_name) {}
 // Account::~Account() {}
 void Account::deposit(double amount)
 {
