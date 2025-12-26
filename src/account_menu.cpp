@@ -1,6 +1,7 @@
 #include "account_menu.h"
 void AccountMenu::display_menu(User user)
 {
+    system("cls");
     this->user = user;
     std::cout << "Welcome " << user.get_username() << std::endl;
     printf("Account Menu:\n");
@@ -98,8 +99,12 @@ void AccountMenu::view_account_details()
     }
     else
     {
-        printf("Exiting, Goodbye..");
-        exit(0);
+        std::vector<Account> accounts = user.get_bank_accounts();
+        for (auto account : accounts)
+        {
+            account.get_account_details();
+        }
+        back_to_menu();
     }
 }
 
@@ -254,4 +259,22 @@ void AccountMenu::logout_and_exit()
     // Implement exit to main menu logic here
 
     exit(0);
+}
+
+void AccountMenu::back_to_menu()
+{
+    printf("Continue Back To Menu? (y/n):");
+    char response;
+    std::cin >> response;
+    if (response == 'y' || response == 'Y')
+    {
+        display_menu(this->user); // idk if this is the best way to implement
+    }
+    else
+    {
+        printf("Press any button to exit.\n");
+        std::cin.ignore();
+        std::cin.get();
+        exit(0);
+    }
 }

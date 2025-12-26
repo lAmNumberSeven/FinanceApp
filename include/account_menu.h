@@ -23,6 +23,7 @@ public:
     void add_bill();
     void add_debt();
     void logout_and_exit();
+    void back_to_menu();
 
 private:
     User user;

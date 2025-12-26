@@ -19,21 +19,23 @@ void IntroMenu::handle_user_selection(int choice)
     std::string password;
     User current_user("", "");
     AccountMenu account_menu(current_user);
+
     switch (choice)
     {
     case 1:
+        system("cls");
         printf("Login selected.\n");
         // Handle login logic here
         current_user = users.login_user();
-        system("cls");
+
         account_menu.display_menu(current_user);
 
         break;
     case 2:
+        system("cls");
         printf("Register selected.\n");
         // Handle registration logic here
         users.register_user();
-        system("cls");
         current_user = users.login_user();
         account_menu.display_menu(current_user);
         // add account menu here to access bank info and operations
