@@ -1,6 +1,10 @@
 #include "account_menu.h"
 void AccountMenu::display_menu(User user)
 {
+    /** @todo fix failed login bug
+     * bug where if user fails to login, user will not have any
+     * corresponding data
+     */
     system("cls");
     this->user = user;
     std::cout << "Welcome " << user.get_username() << std::endl;
@@ -96,6 +100,10 @@ void AccountMenu::view_account_details()
             std::cin >> account_name;
             user.create_bank_account(initial_balance, account_name);
         }
+        else
+        {
+            back_to_menu();
+        }
     }
     else
     {
@@ -116,24 +124,23 @@ void AccountMenu::deposit_funds()
     if (user.get_bank_accounts().empty())
     {
         printf("No bank accounts found to deposit into.\n");
+        back_to_menu();
     }
     else
     {
-        printf("Found %zu bank account(s).\n", user.get_bank_accounts().size());
-        printf("choose an account to deposit into: \n");
-        int chosen_account;
-        std::cin >> chosen_account;
+        int account_selection = account_choice();
 
         double amount;
         printf("Enter amount to deposit: ");
         std::cin >> amount;
 
-        Account *account = (Account *)&user.get_bank_accounts().at(chosen_account);
+        Account *account = (Account *)&user.get_bank_accounts().at(account_selection);
         account->deposit(amount);
 
         printf("Deposited %.2f into your account.\n", amount);
         printf("Current Balance: %.2f", account->get_balance());
     }
+    back_to_menu();
 }
 
 void AccountMenu::withdraw_funds()
@@ -142,25 +149,17 @@ void AccountMenu::withdraw_funds()
     printf("Withdraw Funds Selected.\n");
 
     printf("Choose what account to withdraw from: \n");
-    int chosen_account;
-    std::cin >> chosen_account;
-    if (user.get_bank_accounts().empty())
-    {
-        printf("No bank accounts found to withdraw from.\n");
-        return;
-    }
-    if (chosen_account >= user.get_bank_accounts().size() || chosen_account < 0)
-    {
-        printf("Invalid account selection.\n");
-        return;
-    }
+    int account_selection = account_choice();
+
     double amount;
     printf("Enter amount to withdraw: ");
     std::cin >> amount;
-    Account *account = (Account *)&user.get_bank_accounts().at(chosen_account);
+    Account *account = (Account *)&user.get_bank_accounts().at(account_selection);
     account->withdraw(amount);
     printf("Withdrew %.2f from your account.\n", amount);
     printf("Current Balance: %.2f", account->get_balance());
+
+    back_to_menu();
 }
 
 void AccountMenu::set_income()
@@ -172,6 +171,8 @@ void AccountMenu::set_income()
     user.set_income(amount);
     printf("Income has been set to %.2f.", amount);
     printf("Current Income: %.2f", user.get_income());
+
+    back_to_menu();
 }
 
 void AccountMenu::create_bank_account()
@@ -195,11 +196,7 @@ void AccountMenu::create_bank_account()
     {
         user.get_bank_accounts();
     }
-    else
-    {
-        printf("Invalid input, exiting...");
-        exit(0);
-    }
+    back_to_menu();
 }
 
 void AccountMenu::view_financial_summary()
@@ -229,15 +226,26 @@ void AccountMenu::view_financial_summary()
 void AccountMenu::pay_bill()
 {
     system("cls");
-    printf("Pay Bill:\n");
+    printf("Pay Bill Selected.\n");
 
-    printf("Select Which Bill To Pay: ");
+    int bill_choice = user.bill_choice();
+    int user_account_choice = account_choice();
+    Bill bill = user.get_bills().at(bill_choice);
+
+    user.pay_bill(bill_choice, bill.get_amount(), user_account_choice);
 }
 
 void AccountMenu::pay_debt()
 {
     system("cls");
-    printf("Pay Debt:\n");
+    printf("Pay Debt Selected\n");
+
+    int debt_choice = user.debt_choice();
+    int user_account_choice = account_choice();
+    Debt debt = user.get_debts().at(debt_choice);
+
+    user.pay_debt(debt_choice, debt.get_monthly_payment(), user_account_choice);
+    // add info about payment (reciepts)
 }
 
 void AccountMenu::payoff_bill() {}
@@ -277,4 +285,25 @@ void AccountMenu::back_to_menu()
         std::cin.get();
         exit(0);
     }
+}
+
+int AccountMenu::account_choice() const
+{
+    if (user.get_bank_accounts().empty())
+    {
+        printf("No bank accounts found to withdraw from.\n");
+        return -1;
+    }
+
+    printf("Found %zu bank account(s).\n", user.get_bank_accounts().size());
+    for (int i = 0; i < user.get_bank_accounts().size(); i++)
+    {
+        Account account = user.get_bank_accounts().at(i);
+        std::cout << i << ". " << account.get_name()
+                  << std::endl;
+    }
+    printf("choose an account to deposit into: \n");
+    int chosen_account;
+    std::cin >> chosen_account;
+    return chosen_account;
 }

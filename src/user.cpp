@@ -201,3 +201,39 @@ void User::payoff_debt(int index, int bank_account)
     // printf("Paid off debt due on: %s \n", debt.get_name());
     debt.get_debt_details();
 }
+
+int User::bill_choice() const
+{
+    if (bills.empty())
+    {
+        printf("Found NO bills\n");
+        return -1;
+    }
+    printf("Found %zu bills.\n", bills.size());
+    for (int i = 0; i < bills.size(); i++)
+    {
+        std::cout << i << ". " << bills.at(i).get_amount() << std::endl;
+    }
+    printf("Choose a bill: ");
+    int choice;
+    std::cin >> choice;
+    return choice;
+}
+
+int User::debt_choice() const
+{
+    if (debts.empty())
+    {
+        printf("Found NO debts.\n");
+        return -1;
+    }
+    printf("Found %zu debts.\n", debts.size());
+    for (int i = 0; i < debts.size(); i++)
+    {
+        std::cout << i << ". " << debts.at(i).get_name() << std::endl;
+    }
+    printf("Choose a debt: ");
+    int choice;
+    std::cin >> choice;
+    return choice;
+}

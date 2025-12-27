@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 class Account
 {
 public:
@@ -11,11 +12,11 @@ public:
     double get_balance() const;
     double get_income_vs_expense() const;
     void get_account_details();
-    void set_account_name();
+    std::string get_name();
 
 private:
     double balance;
     double income_vs_expense;
-    bool is_negative_balance;
+    bool is_negative_balance = false; // maybe remove this
     std::string account_name;
 };

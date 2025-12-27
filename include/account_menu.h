@@ -24,6 +24,7 @@ public:
     void add_debt();
     void logout_and_exit();
     void back_to_menu();
+    int account_choice() const;
 
 private:
     User user;

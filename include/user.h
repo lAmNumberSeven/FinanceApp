@@ -34,6 +34,8 @@ public:
     void pay_bill(int index, double amount, int bank_account);
     void payoff_bill(int index, int bank_account);
     void payoff_debt(int index, int bank_account);
+    int bill_choice() const;
+    int debt_choice() const;
 
 private:
     std::vector<Account> bank_accounts;
