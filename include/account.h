@@ -20,3 +20,5 @@ private:
     bool is_negative_balance = false; // maybe remove this
     std::string account_name;
 };
+
+/** @todo add interest for savings account */

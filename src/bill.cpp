@@ -33,4 +33,10 @@ void Bill::get_bill_details() const
     printf("Due Date: %s\n", due_date.c_str());
     printf("Description: %s\n", description.c_str());
     printf("Category: %s\n", category.c_str());
+    printf("Is Paid: %s", is_paid ? "true" : "false");
+}
+
+bool Bill::get_is_paid() const
+{
+    return is_paid;
 }

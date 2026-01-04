@@ -4,6 +4,9 @@
 #include "account.h"
 #include <fstream>
 #include <vector>
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 
 class User
 {
@@ -36,6 +39,8 @@ public:
     void payoff_debt(int index, int bank_account);
     int bill_choice() const;
     int debt_choice() const;
+    void store_change(int id);
+    // void load_change(int id);
 
 private:
     std::vector<Account> bank_accounts;
@@ -46,4 +51,6 @@ private:
     bool is_logged_in;
     double income;
     int id;
+
+    std::string get_line(int line_number, const std::string file_name);
 };

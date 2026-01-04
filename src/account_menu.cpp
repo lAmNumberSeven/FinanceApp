@@ -43,11 +43,9 @@ void AccountMenu::handle_user_selection(int choice)
         break;
     case 3:
         withdraw_funds();
-        // Implement withdraw funds logic here
         break;
     case 4:
         set_income();
-        // Implement exit to main menu logic here
         break;
     case 5:
         create_bank_account();
@@ -138,7 +136,7 @@ void AccountMenu::deposit_funds()
         account->deposit(amount);
 
         printf("Deposited %.2f into your account.\n", amount);
-        printf("Current Balance: %.2f", account->get_balance());
+        printf("Current Balance: %.2f\n", account->get_balance());
     }
     back_to_menu();
 }
@@ -150,14 +148,20 @@ void AccountMenu::withdraw_funds()
 
     printf("Choose what account to withdraw from: \n");
     int account_selection = account_choice();
+    Account *account = (Account *)&user.get_bank_accounts().at(account_selection);
+
+    system("cls");
+    printf("Current Balance: %.2f\n", account->get_balance());
 
     double amount;
     printf("Enter amount to withdraw: ");
     std::cin >> amount;
-    Account *account = (Account *)&user.get_bank_accounts().at(account_selection);
     account->withdraw(amount);
+
     printf("Withdrew %.2f from your account.\n", amount);
-    printf("Current Balance: %.2f", account->get_balance());
+    printf("Current Balance: %.2f\n", account->get_balance());
+
+    user.store_change(account_selection);
 
     back_to_menu();
 }
@@ -166,11 +170,27 @@ void AccountMenu::set_income()
 {
     system("cls");
     printf("Set Income Selected.\n");
+
+    printf("1. Hourly 2. Yearly? Please Pick Format For Income: ");
+    int choice;
+    std::cin >> choice;
+
+    printf("Please Enter Income: ");
     double amount;
     std::cin >> amount;
+
     user.set_income(amount);
-    printf("Income has been set to %.2f.", amount);
-    printf("Current Income: %.2f", user.get_income());
+
+    if (choice == 1)
+    {
+        user.set_income(amount * 40 * 52);
+    }
+    else
+    {
+        user.set_income(amount);
+    }
+    printf("Income has been set to %.2f.\n", amount);
+    printf("Current Income: %.2f\n", user.get_income());
 
     back_to_menu();
 }
@@ -302,7 +322,7 @@ int AccountMenu::account_choice() const
         std::cout << i << ". " << account.get_name()
                   << std::endl;
     }
-    printf("choose an account to deposit into: \n");
+    printf("choose an account to contiue into: ");
     int chosen_account;
     std::cin >> chosen_account;
     return chosen_account;

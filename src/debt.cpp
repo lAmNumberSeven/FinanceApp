@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <cmath>
 Debt::Debt(double amount, double interest_rate, int term_months)
-    : principal(amount), interest_rate(interest_rate), term_months(term_months) {}
+    : principal(amount), interest_rate(interest_rate), term_months(term_months), total(principal * interest_rate) {}
 // Debt::~Debt() {}
 double Debt::get_monthly_payment() const
 {
@@ -23,6 +23,7 @@ void Debt::get_debt_details() const
     printf("Term (months): %d\n", term_months);
     printf("Monthly Payment: %.2f\n", get_monthly_payment());
     printf("Total Payment: %.2f\n", get_total_payment());
+    printf("Paid for the month: %s\n", is_paid ? "true" : "false");
 }
 
 void Debt::set_name(std::string name)
@@ -34,3 +35,22 @@ std::string Debt::get_name() const
 {
     return name;
 }
+
+void Debt::pay(double amount)
+{
+    if (amount > get_monthly_payment())
+    {
+        total = total - get_monthly_payment();
+        amount = amount - get_monthly_payment();
+        principal = principal - amount;
+    }
+    else if (amount < get_monthly_payment())
+    {
+        printf("Not enough for monthly payment.\n");
+    }
+    else
+    {
+        total = total - amount;
+    }
+}
+/** @todo add a checker for up to date payments regarding loan */

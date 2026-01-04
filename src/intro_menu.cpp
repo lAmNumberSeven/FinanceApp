@@ -38,7 +38,6 @@ void IntroMenu::handle_user_selection(int choice)
         users.register_user();
         current_user = users.login_user();
         account_menu.display_menu(current_user);
-        // add account menu here to access bank info and operations
         break;
     case 3:
         printf("Exiting the application. Goodbye!\n");
@@ -50,10 +49,7 @@ void IntroMenu::handle_user_selection(int choice)
         break;
     }
 }
-void IntroMenu::display_menu(User users)
-{
-    // This function is intentionally left blank as per the current design.
-}
+
 IntroMenu::IntroMenu(Users users) : users(users)
 {
     // printf("Welcome to the Budget App!\n");

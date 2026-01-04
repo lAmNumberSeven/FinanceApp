@@ -10,10 +10,13 @@ public:
     void get_debt_details() const;
     void set_name(std::string name);
     std::string get_name() const;
+    void pay(double amount);
 
 private:
     double principal;
     double interest_rate;
     int term_months;
     std::string name;
+    bool is_paid = false;
+    double total;
 };

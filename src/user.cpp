@@ -16,7 +16,6 @@ User::User(const std::string &username, const std::string &password)
                 std::string username = line.substr(0, delimiter_pos);
                 if (username == get_username()) // check that account is users
                 {
-                    printf("lgtm\n");
                     size_t second_delimiter_pos = line.find(',', delimiter_pos + 1);
                     std::string account_name = line.substr(delimiter_pos + 1, second_delimiter_pos - delimiter_pos - 1);
                     double balance = std::stod(line.substr(second_delimiter_pos + 1));
@@ -236,4 +235,70 @@ int User::debt_choice() const
     int choice;
     std::cin >> choice;
     return choice;
+}
+
+std::string User::get_line(int line_number, const std::string file_name)
+{
+    std::ifstream file(file_name);
+    std::string line;
+    int cur_line = 1;
+    if (file.is_open())
+    {
+        while (std::getline(file, line))
+        {
+
+            if (cur_line == line_number)
+            {
+                file.close();
+                return line;
+            }
+        }
+        printf("Could NOT find line number.\n");
+        file.close();
+    }
+    else
+    {
+        std::cout << "Error opening file: " << file_name << std::endl;
+    }
+    return "";
+}
+
+void User::store_change(int id)
+{
+    double current_balance = get_account(id).get_balance();
+    std::ostringstream stream;
+    stream << std::fixed << std::setprecision(2) << current_balance;
+    std::string new_balance = stream.str();
+
+    std::string line = get_line(id + 1, "accounts.txt");
+    size_t delimiter = line.find(',');
+    size_t second_delimiter = line.find(',', delimiter + 1);
+    std::string old_balance = line.substr(second_delimiter + 1);
+
+    std::ifstream file_in("accounts.txt");
+    if (!file_in)
+    {
+        printf("Could not open accounts.txt");
+    }
+
+    std::stringstream buffer;
+    buffer << file_in.rdbuf();
+    file_in.close();
+    std::string file_contents = buffer.str();
+
+    size_t pos = 0;
+    while ((pos = file_contents.find(old_balance, pos)) != std::string::npos)
+    {
+        file_contents.replace(pos, old_balance.length(), new_balance);
+        pos += new_balance.length();
+    }
+
+    std::ofstream file_out("accounts.txt", std::ios::trunc);
+    if (!file_out)
+    {
+        printf("file cannot be opened.\n");
+    }
+
+    file_out << file_contents;
+    file_out.close();
 }

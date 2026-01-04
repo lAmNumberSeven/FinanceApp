@@ -1,5 +1,6 @@
 #include "account.h"
 #include <cstdio>
+#include <fstream>
 
 Account::Account(double initial_balance, std::string account_name) : balance(initial_balance), account_name(account_name) {}
 // Account::~Account() {}
@@ -10,11 +11,8 @@ void Account::deposit(double amount)
         printf("Deposit amount must be positive.\n");
         return;
     }
-    else
-    {
-        balance += amount;
-    }
 }
+
 void Account::withdraw(double amount)
 {
     if (amount > balance)
@@ -27,7 +25,7 @@ void Account::withdraw(double amount)
     else
     {
         balance -= amount;
-        printf("Current balance after withdraw: %.2f", balance);
+        printf("Current balance after withdraw: %.2f\n", balance);
     }
 }
 
