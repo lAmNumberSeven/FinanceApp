@@ -302,3 +302,19 @@ void User::store_change(int id)
     file_out << file_contents;
     file_out.close();
 }
+
+void User::print_bills()
+{
+    for (auto bill : bills)
+    {
+        bill.get_bill_details();
+    }
+}
+
+void User::print_debts()
+{
+    for (auto debt : debts)
+    {
+        debt.get_debt_details();
+    }
+}

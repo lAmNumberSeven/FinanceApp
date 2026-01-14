@@ -28,6 +28,7 @@ void AccountMenu::display_menu(User user)
     while (choice != 13)
     {
         handle_user_selection(choice);
+        back_to_menu();
     }
 }
 void AccountMenu::handle_user_selection(int choice)
@@ -49,22 +50,31 @@ void AccountMenu::handle_user_selection(int choice)
         break;
     case 5:
         create_bank_account();
+        break;
     case 6:
         view_financial_summary();
+        break;
     case 7:
         pay_bill();
+        break;
     case 8:
         pay_debt();
+        break;
     case 9:
         payoff_bill();
+        break;
     case 10:
         payoff_debt();
+        break;
     case 11:
         add_bill();
+        break;
     case 12:
         add_debt();
+        break;
     case 13:
         logout_and_exit();
+        break;
     default:
         printf("Invalid choice. Please try again.\n");
         display_menu(user);
@@ -110,7 +120,6 @@ void AccountMenu::view_account_details()
         {
             account.get_account_details();
         }
-        back_to_menu();
     }
 }
 
@@ -135,10 +144,8 @@ void AccountMenu::deposit_funds()
         Account *account = (Account *)&user.get_bank_accounts().at(account_selection);
         account->deposit(amount);
 
-        printf("Deposited %.2f into your account.\n", amount);
-        printf("Current Balance: %.2f\n", account->get_balance());
+        user.store_change(account_selection);
     }
-    back_to_menu();
 }
 
 void AccountMenu::withdraw_funds()
@@ -158,12 +165,7 @@ void AccountMenu::withdraw_funds()
     std::cin >> amount;
     account->withdraw(amount);
 
-    printf("Withdrew %.2f from your account.\n", amount);
-    printf("Current Balance: %.2f\n", account->get_balance());
-
     user.store_change(account_selection);
-
-    back_to_menu();
 }
 
 void AccountMenu::set_income()
@@ -191,8 +193,6 @@ void AccountMenu::set_income()
     }
     printf("Income has been set to %.2f.\n", amount);
     printf("Current Income: %.2f\n", user.get_income());
-
-    back_to_menu();
 }
 
 void AccountMenu::create_bank_account()
@@ -207,36 +207,26 @@ void AccountMenu::create_bank_account()
     std::string account_name;
     std::cin >> account_name;
     user.create_bank_account(balance, account_name);
-
-    printf("Account Create!\n");
-    printf("Press 1 to View to New Account");
-    int input;
-    std::cin >> input;
-    if (input == 1)
-    {
-        user.get_bank_accounts();
-    }
-    back_to_menu();
 }
 
 void AccountMenu::view_financial_summary()
 {
     system("cls");
     printf("Financial Summary:\n");
-    printf("Current Income: %.2f\n", user.get_income());
+    printf("Current Income: %.2f\n\n", user.get_income());
     printf("Bank Accounts Info: \n ");
     for (auto account : user.get_bank_accounts())
     {
         account.get_account_details();
     }
 
-    printf("Bills: \n");
+    printf("\nBills: \n");
     for (const auto bill : user.get_bills())
     {
         bill.get_bill_details();
     }
 
-    printf("Debts: \n");
+    printf("\nDebts: \n");
     for (const auto debt : user.get_debts())
     {
         debt.get_debt_details();
@@ -273,13 +263,42 @@ void AccountMenu::payoff_debt() {}
 void AccountMenu::add_bill()
 {
     system("cls");
-    printf("Add Bill: \n");
+    printf("Create New Bill: \n");
+    printf("Enter Amount of bill due each month: ");
+    double amount = 0.0;
+    std::cin >> amount;
+
+    printf("Enter Due Date(dd): ");
+    std::string due_date;
+    std::cin >> due_date;
+
+    Bill bill{amount, due_date};
+    user.add_bill(bill);
+
+    printf("Bill Added!\n");
+    user.print_bills();
 }
 
 void AccountMenu::add_debt()
 {
     system("cls");
-    printf("Add Debt:");
+    printf("Add New Debt:\n");
+    printf("Enter Amount of debt: ");
+    double amount = 0.0;
+    std::cin >> amount;
+
+    printf("Enter inetrest rate: ");
+    double interest_rate = 0.0;
+    std::cin >> interest_rate;
+
+    printf("Enter terms in months: ");
+    int term = 0;
+    std::cin >> term;
+
+    Debt debt{amount, interest_rate, term};
+    user.add_debt(debt);
+    printf("Debt Added!\n");
+    user.print_debts();
 }
 void AccountMenu::logout_and_exit()
 {

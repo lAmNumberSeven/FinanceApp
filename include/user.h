@@ -31,6 +31,8 @@ public:
     void add_debt(const Debt &debt);
     const std::vector<Bill> &get_bills() const;
     const std::vector<Debt> &get_debts() const;
+    void print_bills();
+    void print_debts();
     double calculate_total_monthly_bills() const;
     double calculate_total_monthly_debts() const;
     void pay_debt(int index, double amount, int bank_account);

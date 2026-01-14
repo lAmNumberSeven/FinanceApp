@@ -1,1 +1,2 @@
-cg8153,checking,1000.00
+cg8153,checking,1889.14
+cg8153,savings,337.77

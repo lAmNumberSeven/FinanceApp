@@ -11,6 +11,9 @@ void Account::deposit(double amount)
         printf("Deposit amount must be positive.\n");
         return;
     }
+    balance += amount;
+    printf("Deposited %.2f into your account.\n", amount);
+    printf("Current Balance: %.2f\n", balance);
 }
 
 void Account::withdraw(double amount)
@@ -22,11 +25,10 @@ void Account::withdraw(double amount)
         printf("Insufficient funds for withdrawal of %.2f\n", amount);
         return;
     }
-    else
-    {
-        balance -= amount;
-        printf("Current balance after withdraw: %.2f\n", balance);
-    }
+
+    balance -= amount;
+    printf("Withdrew %.2f from your account.\n", amount);
+    printf("Current balance after withdraw: %.2f\n", balance);
 }
 
 double Account::get_balance() const
@@ -42,8 +44,8 @@ double Account::get_income_vs_expense() const
 void Account::get_account_details()
 {
     std::cout << "Account: " << this->account_name << std::endl;
-    printf("Account Balance: %.2f\n", balance);
-    printf("Income vs Expense: %.2f\n", income_vs_expense);
+    printf("Balance: %.2f\n", balance);
+    // printf("Income vs Expense: %.2f\n", income_vs_expense);
 }
 
 std::string Account::get_name()
